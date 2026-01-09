@@ -84,7 +84,7 @@ const delayedBuyService = asyncHandler(async (req, res) => {
     throw new Error("Service not found");
   }
 
-  if (!["ACCEPTED"].includes(service.status)) {
+  if (!["ACCEPTED","DELAYED"].includes(service.status)) {
     res.status(400);
     throw new Error("Only accepted services can be delayed");
   }
@@ -157,6 +157,8 @@ const completeBuyService = asyncHandler(async (req, res) => {
     }
   
     service.status = "COMPLETED";
+    service.actual_completion_cost=req.body.actual_completion_cost || service.actual_completion_cost;
+    service.completion_description=req.body?.completion_description || "";
     await service.save();
   
     res.status(200).json({
@@ -236,7 +238,33 @@ const completeBuyService = asyncHandler(async (req, res) => {
     
     res.status(200).json(data);
   });
-  
+  const getDateWiseCollections = asyncHandler(async(req, res) => {
+    if (!req.user) {
+        res.status(401);
+        throw new Error("Unauthorized");
+    }
+
+    const { date } = req.params;
+    if (!date) {
+        res.status(400);
+        throw new Error("Date is required");
+    }
+
+    const data = await Buyer.find({ date, status: "COMPLETED" })
+        .select('-__v -createdAt -updatedAt')
+        .populate({ path: 'products', select: '-__v -createdAt -updatedAt' });
+
+    const totalCollection = data.reduce((acc, current) => {
+        return acc + (current.actual_cost || 0); 
+    }, 0);
+
+    res.status(200).json({
+        success: true,
+        totalCollection,
+        data
+    });
+});
+
   
   
 module.exports = {
@@ -246,5 +274,6 @@ module.exports = {
   handOverBuyService,
   completeBuyService,
   declineBuyService,
-  getAllYourServices
+  getAllYourServices,
+  getDateWiseCollections
 };

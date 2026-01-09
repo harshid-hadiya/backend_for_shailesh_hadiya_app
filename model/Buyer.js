@@ -47,6 +47,8 @@ const buyerSchema = new mongoose.Schema(
       enum: ["PENDING", "ACCEPTED", "DECLINED", "DELAYED","COMPLETED"],
       default: "PENDING",
     },
+    actual_completion_cost:{type:Number,default:0},
+    completion_description:{type:String,default:""}
   },
   { timestamps: true }
 );

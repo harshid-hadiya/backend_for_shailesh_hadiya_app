@@ -6,7 +6,8 @@ const {
     handOverBuyService,
     completeBuyService,
     declineBuyService,
-    getAllYourServices } = require("../controller/buyerController");
+    getAllYourServices, 
+    getDateWiseCollections} = require("../controller/buyerController");
 const { getAllProducts, getSingleProduct,createProducts,
     updateProduct,
     deleteProduct, } = require('../controller/productController');
@@ -21,6 +22,7 @@ router.route("/handOverBuyService").post(middlevalidate,handOverBuyService)
 router.route("/completeBuyService/:id").post(middlevalidate,completeBuyService)
 router.route("/declineBuyService/:id").post(middlevalidate,declineBuyService)
 router.route("/getAllYourServices").get(middlevalidate,getAllYourServices)
+router.route("/getDateWiseCollections/:date").get(middlevalidate,getDateWiseCollections);
 
 
 router.route("/getAllexpersts").get(middlevalidate,expressAsyncHandler(async(req,res)=>{
