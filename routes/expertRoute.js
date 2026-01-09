@@ -7,7 +7,8 @@ const {
     completeBuyService,
     declineBuyService,
     getAllYourServices, 
-    getDateWiseCollections} = require("../controller/buyerController");
+    getDateWiseCollections,
+    tentenCollections} = require("../controller/buyerController");
 const { getAllProducts, getSingleProduct,createProducts,
     updateProduct,
     deleteProduct, } = require('../controller/productController');
