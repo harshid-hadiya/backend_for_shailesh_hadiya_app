@@ -5,7 +5,7 @@ const buyerSchema = new mongoose.Schema(
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, lowercase: true },
     address: { type: String, required: true },
-
+    mono:{type:Number,required:true},
     products: [
       {
         type: mongoose.Schema.Types.ObjectId,

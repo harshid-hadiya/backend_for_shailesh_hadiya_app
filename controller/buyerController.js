@@ -266,8 +266,53 @@ const completeBuyService = asyncHandler(async (req, res) => {
     });
 });
 
-  
-  
+const tentenCollections = asyncHandler(async (req, res) => {
+  if (!req.user) {
+    res.status(401);
+    throw new Error("Unauthorized");
+  }
+
+  const { date } = req.params;
+  if (!date) {
+    res.status(400);
+    throw new Error("Date is required");
+  }
+
+  const limit = parseInt(req.query.limit) || 10;
+  const offset = parseInt(req.query.offset) || 0;
+
+  const query = {
+    id_of_user: req.user._id,
+    status: "COMPLETED",
+    date: date
+  };
+
+  const data = await Buyer.find(query)
+    .select("-__v -createdAt -updatedAt")
+    .populate({
+      path: "products",
+      select: "-__v -createdAt -updatedAt"
+    })
+    .skip(offset)
+    .limit(limit);
+
+  const totalCollection = data.reduce(
+    (acc, curr) => acc + (curr.actual_completion_cost || 0),
+    0
+  );
+
+  const totalRecords = await Buyer.countDocuments(query);
+
+  res.status(200).json({
+    success: true,
+    totalCollection,
+    totalRecords,
+    limit,
+    offset,
+    data
+  });
+});
+
 module.exports = {
   buyService,
   acceptBuyService,
@@ -276,5 +321,6 @@ module.exports = {
   completeBuyService,
   declineBuyService,
   getAllYourServices,
-  getDateWiseCollections
+  getDateWiseCollections,
+  tentenCollections
 };

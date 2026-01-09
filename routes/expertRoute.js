@@ -36,6 +36,7 @@ router.route("/getSingleProduct/:id").get(middlevalidate,getSingleProduct)
 router.route("/creteProducts").post(middlevalidate,createProducts)
 router.route("/updateProduct/:id").put(middlevalidate,updateProduct)
 router.route("/deleteProduct/:id").delete(middlevalidate,deleteProduct)
+router.route("/getOffsets").post(middlevalidate,tentenCollections)
 router.route("/setnonAvailibility").post(expressAsyncHandler(async(req,res)=>{
     const {date,nonavailibility}=req.body;
     if(!date){
