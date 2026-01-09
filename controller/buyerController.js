@@ -218,9 +218,15 @@ const completeBuyService = asyncHandler(async (req, res) => {
   
     const data = await Buyer.find({
       $or: [
-        { id_of_user: req.user._id,$in: [ "ACCEPTED", "DELAYED" ] },
-        { status: "PENDING" }
+        {
+          id_of_user: req.user._id,
+          status: { $in: ["ACCEPTED", "DELAYED"] }
+        },
+        {
+          status: "PENDING"
+        }
       ]
+      
     })
     .select('-__v -createdAt -updatedAt')
     .populate({
