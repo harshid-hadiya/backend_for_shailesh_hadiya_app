@@ -294,7 +294,7 @@ const tentenCollections = asyncHandler(async (req, res) => {
       select: "-__v -createdAt -updatedAt"
     })
     .skip(offset)
-    .limit(limit);
+    .limit(limit).sort({updateAt: -1});
 
   const totalCollection = data.reduce(
     (acc, curr) => acc + (curr.actual_completion_cost || 0),
