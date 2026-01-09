@@ -257,6 +257,9 @@ const completeBuyService = asyncHandler(async (req, res) => {
     const totalCollection = data.reduce((acc, current) => {
         return acc + (current.actual_cost || 0); 
     }, 0);
+    console.log("Total Collection:", totalCollection);
+    console.log("Data:", data);
+    
 
     res.status(200).json({
         success: true,
