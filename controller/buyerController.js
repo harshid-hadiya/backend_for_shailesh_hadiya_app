@@ -272,11 +272,7 @@ const tentenCollections = asyncHandler(async (req, res) => {
     throw new Error("Unauthorized");
   }
 
-  const { date } = req.params;
-  if (!date) {
-    res.status(400);
-    throw new Error("Date is required");
-  }
+ 
 
   const limit = parseInt(req.query.limit) || 10;
   const offset = parseInt(req.query.offset) || 0;
@@ -284,7 +280,6 @@ const tentenCollections = asyncHandler(async (req, res) => {
   const query = {
     id_of_user: req.user._id,
     status: "COMPLETED",
-    date: date
   };
 
   const data = await Buyer.find(query)
