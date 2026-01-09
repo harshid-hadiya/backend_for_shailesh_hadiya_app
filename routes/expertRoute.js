@@ -19,8 +19,15 @@ router.route("/acceptBuyService/:id").get(middlevalidate,acceptBuyService);
 router.route("/delayedBuyService/:id").get(middlevalidate,delayedBuyService)
 router.route("/handOverBuyService").post(middlevalidate,handOverBuyService)
 router.route("/completeBuyService/:id").post(middlevalidate,completeBuyService)
-router.route("/declineBuyService/:id").get(middlevalidate,declineBuyService)
+router.route("/declineBuyService/:id").post(middlevalidate,declineBuyService)
 router.route("/getAllYourServices").get(middlevalidate,getAllYourServices)
+
+
+router.route("/getAllexpersts").get(middlevalidate,expressAsyncHandler(async(req,res)=>{
+    const User=require('../model/User.js')
+    const experts=await User.find().select("-password -__v -createdAt -updatedAt");
+    res.status(200).json(experts);
+}));
 
 router.route("/getAllProducts").get(middlevalidate,getAllProducts)
 router.route("/getSingleProduct/:id").get(middlevalidate,getSingleProduct)

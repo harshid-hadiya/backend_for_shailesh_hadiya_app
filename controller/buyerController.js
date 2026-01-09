@@ -77,7 +77,7 @@ const delayedBuyService = asyncHandler(async (req, res) => {
   }
 
   const { id } = req.params;
-
+  
   const service = await Buyer.findById(id).select('-__v -createdAt -updatedAt').populate({path:'products',select:'-__v -createdAt -updatedAt'});
   if (!service) {
     res.status(404);
@@ -88,7 +88,8 @@ const delayedBuyService = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Only accepted services can be delayed");
   }
-
+  service.date = req.body.new_date || service.date;
+  service.timeslots = req.body.new_timeslots || service.timeslots;
   service.status = "DELAYED";
   await service.save();
 
@@ -217,7 +218,7 @@ const completeBuyService = asyncHandler(async (req, res) => {
   
     const data = await Buyer.find({
       $or: [
-        { id_of_user: req.user._id },
+        { id_of_user: req.user._id,$in: [ "ACCEPTED", "DELAYED" ] },
         { status: "PENDING" }
       ]
     })
