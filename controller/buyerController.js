@@ -255,10 +255,8 @@ const completeBuyService = asyncHandler(async (req, res) => {
         .populate({ path: 'products', select: '-__v -createdAt -updatedAt' });
 
     const totalCollection = data.reduce((acc, current) => {
-        return acc + (current.actual_cost || 0); 
+        return acc + (current.actual_completion_cost || 0); 
     }, 0);
-    console.log("Total Collection:", totalCollection);
-    console.log("Data:", data);
     
 
     res.status(200).json({
