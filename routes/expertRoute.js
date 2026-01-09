@@ -16,7 +16,7 @@ router.route("/register").post(createUser);
 router.route("/login").post(LoginHandler);
 router.route("/update").post(middlevalidate,updateUser);
 router.route("/acceptBuyService/:id").get(middlevalidate,acceptBuyService);
-router.route("/delayedBuyService/:id").get(middlevalidate,delayedBuyService)
+router.route("/delayedBuyService/:id").post(middlevalidate,delayedBuyService)
 router.route("/handOverBuyService").post(middlevalidate,handOverBuyService)
 router.route("/completeBuyService/:id").post(middlevalidate,completeBuyService)
 router.route("/declineBuyService/:id").post(middlevalidate,declineBuyService)
