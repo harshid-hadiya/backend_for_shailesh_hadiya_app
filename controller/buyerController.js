@@ -5,7 +5,7 @@ const Products = require("../model/Products");
 
 // CREATE BOOKING
 const buyService = asyncHandler(async (req, res) => {
-  const { name, email, address, products, quantity, date, timeslots } = req.body;
+  const { name, email, address, products, quantity, date, timeslots,mono } = req.body;
 
   if (
     !name ||
@@ -14,7 +14,7 @@ const buyService = asyncHandler(async (req, res) => {
     !Array.isArray(products) ||
     !Array.isArray(quantity) ||
     !date ||
-    !timeslots
+    !timeslots || !mono
   ) {
     res.status(400);
     throw new Error("All fields are required");
@@ -34,6 +34,7 @@ const buyService = asyncHandler(async (req, res) => {
     date,
     timeslots,
     id_of_user: req.user?._id || null,
+    mono
   });
 
   res.status(201).json({
