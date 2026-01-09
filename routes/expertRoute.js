@@ -47,4 +47,37 @@ router.route("/setnonAvailibility").post(expressAsyncHandler(async(req,res)=>{
         res.status(201).json(newNonA);
     }
 }));
+router.route("/getNonAvailibility/:date").get(async(req,res)=>{
+    const {date}=req.params;
+    if(!date){
+        res.status(400);
+        throw new Error("Date is required");
+    }
+    const nonA=require('../model/Availibility.js')
+    const exists=await nonA.findOne({date}).select("nonavailibility -_id");
+    if(exists){
+        res.status(200).json(exists.nonavailibility);
+    }else{
+        res.status(200);
+        res.json([]);
+    }
+});
+
+router.route("/removeNonAvailibility").post(expressAsyncHandler(async(req,res)=>{
+    const {date,nonavailibility}=req.body;
+    if(!date){
+        res.status(400);
+        throw new Error("Date is required");
+    }
+    const nonA=require('../model/Availibility.js')
+    const exists=await nonA.findOne({date});
+    if(exists){
+        exists.nonavailibility=exists.nonavailibility.filter(time=>!nonavailibility.includes(time));
+        const updated=await exists.save();
+        res.status(200).json(updated);
+    }else{
+        res.status(404);
+        throw new Error("No non availibility found for this date");
+    }
+}));
 module.exports=router;
