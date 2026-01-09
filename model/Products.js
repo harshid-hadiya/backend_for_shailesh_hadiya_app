@@ -15,7 +15,8 @@ const productSchema = new mongoose.Schema(
     sname: { type: String, required: true, unique: true, trim: true },
     about: { type: [String], default: [] },
     requiredTime: { type: String, required: true },
-    serviceCategory:{type: String,enum:["Service","Repair & gas Refill","installation/uninstallation"]}
+    serviceCategory:{type: String,enum:["Service","Repair & gas Refill","installation/uninstallation"]},
+    pulic_id_of_image: { type: [String], default: [] },
   },
   { timestamps: true }
 );
